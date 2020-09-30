@@ -225,10 +225,11 @@ func zoneCachePurge(c *cli.Context) error {
 			files = c.StringSlice("files")
 			tags  = c.StringSlice("tags")
 			hosts = c.StringSlice("hosts")
+			hosts = c.StringSlice("prefixes")
 		)
 
-		if len(files) == 0 && len(tags) == 0 && len(hosts) == 0 {
-			fmt.Fprintln(os.Stderr, "You must provide at least one of the --files, --tags or --hosts flags")
+		if len(files) == 0 && len(tags) == 0 && len(hosts) == 0 && len(prefixes) == 0 {
+			fmt.Fprintln(os.Stderr, "You must provide at least one of the --files, --tags, --hosts or --prefixes flags")
 			return nil
 		}
 
@@ -237,6 +238,7 @@ func zoneCachePurge(c *cli.Context) error {
 			Files: c.StringSlice("files"),
 			Tags:  c.StringSlice("tags"),
 			Hosts: c.StringSlice("hosts"),
+			Hosts: c.StringSlice("prefixes"),
 		}
 
 		resp, err = api.PurgeCache(zoneID, purgeReq)

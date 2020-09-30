@@ -256,6 +256,9 @@ type PurgeCacheRequest struct {
 	Tags []string `json:"tags,omitempty"`
 	// Purge by hostname - e.g. "assets.example.com"
 	Hosts []string `json:"hosts,omitempty"`
+	// Purge by URL prefix (Enterprise only):
+	// https://support.cloudflare.com/hc/en-us/articles/200169246-Purging-cached-resources-from-Cloudflare
+	Prefixes []string `json:"prefixes,omitempty"`
 }
 
 // PurgeCacheResponse represents the response from the purge endpoint.
@@ -561,7 +564,7 @@ func (api *API) EditZone(zoneID string, zoneOpts ZoneOptions) (Zone, error) {
 // API reference: https://api.cloudflare.com/#zone-purge-all-files
 func (api *API) PurgeEverything(zoneID string) (PurgeCacheResponse, error) {
 	uri := "/zones/" + zoneID + "/purge_cache"
-	res, err := api.makeRequest("POST", uri, PurgeCacheRequest{true, nil, nil, nil})
+	res, err := api.makeRequest("POST", uri, PurgeCacheRequest{true, nil, nil, nil, nil})
 	if err != nil {
 		return PurgeCacheResponse{}, errors.Wrap(err, errMakeRequestError)
 	}
